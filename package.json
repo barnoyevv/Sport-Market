@@ -14,16 +14,22 @@
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@react-spring/web": "^9.7.4",
     "antd": "^5.19.3",
+    "axios": "^1.7.2",
+    "formik": "^2.4.6",
+    "js-cookie": "^3.0.5",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
     "react-router-dom": "^6.25.1",
     "sass": "^1.77.8",
     "styled-components": "^6.1.12",
-    "swiper": "^11.1.7"
+    "swiper": "^11.1.7",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

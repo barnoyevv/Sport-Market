@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useState } from 'react'
-import Image from 'next/image'
-import Logo from '@/public/logo.svg'
-import { Fira_Sans } from 'next/font/google'
-import Link from 'next/link'
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
-import MarkunreadIcon from '@mui/icons-material/Markunread'
-import MenuIcon from '@mui/icons-material/Menu'
-import CloseIcon from '@mui/icons-material/Close'
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Logo from '@/public/logo.svg';
+import { Fira_Sans } from 'next/font/google';
+import Link from 'next/link';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import MarkunreadIcon from '@mui/icons-material/Markunread';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,17 +16,18 @@ import CategoryIcon from '@mui/icons-material/Category';
 import InputAdornment from '@mui/material/InputAdornment';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import Basket from "@/public/basket.svg"
+import Basket from "@/public/basket.svg";
+import SpringModal from '@/components/modals/auth-modal'; // Make sure this path is correct
 
 const firaSans = Fira_Sans({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
-})
+});
 
 interface Route {
-  path: string
-  content: string
+  path: string;
+  content: string;
 }
 
 const routes: Route[] = [
@@ -35,16 +36,19 @@ const routes: Route[] = [
   { path: '/payment-and-delivery', content: 'Оплата и Доставка' },
   { path: '/news', content: 'Новости' },
   { path: '/about', content: 'О нас' },
-]
+];
 
 const Header: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
+    setMenuOpen(!menuOpen);
+  };
 
   return (
     <>
+      <SpringModal open={open} handleClose={() => setOpen(false)} />
       <header className="fixed top-0 left-0 w-full z-50 px-2 py-3 bg-[#1F1D14] flex items-center justify-between sm:px-5 lg:px-24 xl:px-30">
         <div className="flex items-center">
           <div className="flex items-center gap-2">
@@ -58,7 +62,7 @@ const Header: React.FC = () => {
           <nav className="hidden xl:flex xl:gap-4 ml-6">
             {routes.map((item, index) => (
               <Link key={index} href={item.path}>
-                <p className={`text-base font-normal opacity-80 ${firaSans.className}`}>
+                <p className={`text-base font-normal opacity-80 hover:text-[#ffdb49] ${firaSans.className}`}>
                   {item.content}
                 </p>
               </Link>
@@ -86,7 +90,7 @@ const Header: React.FC = () => {
             <nav className="flex flex-col gap-4">
               {routes.map((item, index) => (
                 <Link key={index} href={item.path}>
-                  <p onClick={toggleMenu} className={`text-lg font-normal text-white ${firaSans.className}`}>
+                  <p onClick={toggleMenu} className={`text-lg font-normal text-white hover:text-red-500 ${firaSans.className}`}>
                     {item.content}
                   </p>
                 </Link>
@@ -169,11 +173,12 @@ const Header: React.FC = () => {
         <div className='flex items-center space-x-2'>
           <Button
             variant="contained"
+            onClick={()=>setOpen(true)}
             sx={{
               backgroundColor: '#F2F2F2',
               color: '#1F1D14',
               '&:hover': {
-                backgroundColor: '#F2F2F2',
+                backgroundColor: '#FBD029',
               },
               height: '40px',
               borderRadius: '5px',
@@ -189,7 +194,7 @@ const Header: React.FC = () => {
               backgroundColor: '#F2F2F2',
               color: '#1F1D14',
               '&:hover': {
-                backgroundColor: '#F2F2F2',
+                backgroundColor: '#FBD029',
               },
               height: '40px',
               borderRadius: '5px',
@@ -199,27 +204,32 @@ const Header: React.FC = () => {
           >
             <FavoriteBorderOutlinedIcon fontSize="small" />
           </Button>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: '#F2F2F2',
-              color: '#1F1D14',
-              '&:hover': {
+          <Link href={'/basket'}>
+            <Button
+              variant="contained"
+              sx={{
                 backgroundColor: '#F2F2F2',
-              },
-              height: '40px',
-              borderRadius: '5px',
-              minWidth: 'max-content',
-              fontSize: '0.875rem',
-            }}
-          >
-            <Image src={Basket} alt='Basket' />
-            <p className='hidden lg:flex'>Корзина</p>
-          </Button>
+                color: '#1F1D14',
+                '&:hover': {
+                  backgroundColor: '#FBD029',
+                },
+                height: '40px',
+                borderRadius: '5px',
+                minWidth: '40px',
+                fontSize: '0.875rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Image src={Basket} alt='basket' className='object-contain w-6 h-6' />
+              <p className='hidden md:flex text-[14px]'>Корзина</p>
+            </Button>
+          </Link>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Header
+export default Header;

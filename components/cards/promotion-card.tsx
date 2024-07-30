@@ -1,29 +1,50 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Card1 from '@/public/card1.png';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from '@mui/material/Button';
 import CardButton from '@/public/basket.svg';
+import { getProduct } from '@/service/products.service';
 
-const catalog = [
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"}
-];
+interface IParams {
+  limit: number;
+  page: number;
+}
 
-const Index = () => {
+interface IndexProps {
+  params: IParams;
+}
+
+const Index: React.FC<IndexProps> = ({ params }) => {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getProduct({params: {page:1, limit: 4}});
+      console.log(result);
+      
+      if (result) {
+        setData(result.products);
+      }
+    };
+
+    fetchData();
+  }, [params]);
+
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
-      {catalog.map((item, index) => (
+      {data.map((item, index) => (
         <div
           key={index}
           className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff]"
         >
           <div className="relative">
             <Image
-              src={item.src}
-              alt={item.alt}
+              src={item.image_url}
+              alt="product image"
+              width={300}
+              height={300}
               className="object-cover rounded-md"
             />
             <FavoriteBorderIcon
@@ -31,10 +52,9 @@ const Index = () => {
               style={{ fontSize: 24 }}
             />
           </div>
-          <p className="text-lg text-black font-normal">{item.text}</p>
+          <p className="text-lg text-black font-normal">{item.product_name}</p>
           <div>
-            <p className='text-lg text-[#FF1313] font-bold'>{item.price}</p>
-            <p className='text-base text-[#1F1D14] opacity-50 font-normal line-through'>{item.old_price}</p>
+            <p className="text-lg text-[#FF1313] font-bold">{item.cost}</p>
           </div>
           <Button
             variant="contained"
@@ -51,16 +71,16 @@ const Index = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '8px',
             }}
           >
-            <Image src={CardButton} alt='CardButton' width={20} height={20}/>
+            <Image src={CardButton} alt="CardButton" width={20} height={20} />
             Корзина
           </Button>
         </div>
       ))}
     </div>
   );
-}
+};
 
 export default Index;
