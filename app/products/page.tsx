@@ -6,7 +6,6 @@ import Board from '@/public/board.svg';
 import List from '@/public/list.svg';
 import Image from 'next/image';
 import ProductsCard from '@/components/cards/products-card';
-import PromotionCard from '@/components/cards/promotion-card';
 
 function valuetext(value: number) {
   return `${value}$`;
@@ -146,7 +145,7 @@ const Index: React.FC = () => {
         <div>
           <h2 className="text-2xl text-[#1F1D14] font-medium">Реконмендуемые продукты</h2>
         </div>
-        <PromotionCard />
+        <ProductsCard />
       </div>
     </div>
   );

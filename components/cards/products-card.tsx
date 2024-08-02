@@ -1,40 +1,60 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Card1 from '@/public/card1.png';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from '@mui/material/Button';
 import CardButton from '@/public/basket.svg';
+import { getProduct } from '@/service/products.service';
+import { useRouter } from 'next/navigation';
 
-const catalog = [
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-  { text: "Бутса Nike Mercurial Superfly 8 FG", src: Card1, alt: "Card1", price: "500 000 UZS", old_price: "750 000 UZS"},
-];
+interface Product {
+  product_id: string;
+  product_name: string;
+  image_url: string;
+  cost: string;
+  liked: boolean;
+}
 
 const Index = () => {
+  const [data, setData] = useState<Product[]>([]);
+  const router = useRouter();
+
+  const getData = async () => {
+    try {
+      const response = await getProduct(1, 4);
+      const productsWithLikeState:any = response.products.map((product) => ({
+        ...product,
+        liked: false,
+      }));
+      setData(productsWithLikeState);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const moveSingle = (product_id: string) => {
+    router.push(`/products/${product_id}`);
+  };
+
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
-      {catalog.map((item, index) => (
+      {data?.map((item) => (
         <div
-          key={index}
-          className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff]"
+          key={item.product_id}
+          className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff] cursor-pointer"
+          onClick={() => moveSingle(item.product_id)}
         >
           <div className="relative">
             <Image
-              src={item.src}
-              alt={item.alt}
+              src={item.image_url[0]}
+              alt="product image"
+              width={300}
+              height={300}
               className="object-cover rounded-md"
             />
             <FavoriteBorderIcon
@@ -42,10 +62,9 @@ const Index = () => {
               style={{ fontSize: 24 }}
             />
           </div>
-          <p className="text-lg text-black font-normal">{item.text}</p>
+          <p className="text-lg text-black font-normal">{item.product_name}</p>
           <div>
-            <p className='text-lg text-[#FF1313] font-bold'>{item.price}</p>
-            <p className='text-base text-[#1F1D14] opacity-50 font-normal line-through'>{item.old_price}</p>
+            <p className="text-lg text-[#000] font-bold">{item.cost}</p>
           </div>
           <Button
             variant="contained"
@@ -62,16 +81,16 @@ const Index = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '8px',
             }}
           >
-            <Image src={CardButton} alt='CardButton' width={20} height={20}/>
+            <Image src={CardButton} alt="CardButton" width={20} height={20} />
             Корзина
           </Button>
         </div>
       ))}
     </div>
   );
-}
+};
 
 export default Index;

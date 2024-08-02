@@ -1,21 +1,31 @@
 import http from "@/api/interceptors";
 
-export const getProduct = async (params: any) => {
+interface ProductResponse {
+  products: Product[];
+}
+
+interface Product {
+  id: number;
+  product_name: string;
+  image_url: string;
+  cost: string;
+}
+
+export const getProduct = async (page: number, limit: number): Promise<ProductResponse> => {
   try {
-    const response = await http.get('/products', { params });
-    
-    // Check for the status and expected response structure
-    if (response.status === 200 && response?.data && Array.isArray(response.data.products) && typeof response.data.total_count === 'number') {
-      return {
-        products: response?.data?.products,
-        totalCount: response?.data?.total_count,
-      };
-    } else {
-      console.error("Unexpected response format:", response);
-      return { products: [], totalCount: 0 };
-    }
+    const response = await http.get(`/products?page=${page}&limit=${limit}`);
+    return response.data;
   } catch (error) {
-    console.log(error);
-    
+    console.error("Error fetching products:", error);
+    throw error;
   }
 };
+
+export const getProductId = async (product_id:string) => {
+  try {
+    const response = await http.get(`/products/${product_id}`)
+    return response.data
+  } catch (error) {
+    console.log(error);
+  }
+}

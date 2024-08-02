@@ -2,10 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import PromotionCard from '@/components/cards/promotion-card';
+import ProductCard from '@/components/cards/products-card';
 import Slash from '@/public/slash.svg';
-import Share from '@/public/share.svg';
-import Print from '@/public/print.svg';
 
 const Index = () => {
 
@@ -69,7 +67,7 @@ const Index = () => {
         <div>
           <h2 className="text-2xl text-[#1F1D14] font-medium">Акция</h2>
         </div>
-        <PromotionCard />
+        <ProductCard />
       </div>
     </div>
   );

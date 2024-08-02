@@ -1,6 +1,6 @@
 import React from 'react'
 import NewsCard from '@/components/cards/news-card'
-import PromotionCard from '@/components/cards/promotion-card'
+import ProductCard from '@/components/cards/products-card'
 
 const Index = () => {
   return (
@@ -19,7 +19,7 @@ const Index = () => {
         <div>
           <h2 className='text-[32px] text-[#1F1D14] font-medium'>Акция</h2>
         </div>
-        <PromotionCard />
+        <ProductCard />
       </div>
     </div>
   )
