@@ -1,4 +1,6 @@
 import http from "@/api/interceptors";
+import Cookies from "js-cookie";
+import { Cookie } from "next/font/google";
 
 interface ProductResponse {
   products: Product[];
@@ -21,10 +23,10 @@ export const getProduct = async (page: number, limit: number): Promise<ProductRe
   }
 };
 
-export const getProductId = async (product_id:string) => {
+export const getProductId = async () => {
   try {
-    const response = await http.get(`/products/${product_id}`)
-    return response.data
+    const id = Cookies.get('product_id')
+    return http.get(`/product/${id}`)
   } catch (error) {
     console.log(error);
   }
