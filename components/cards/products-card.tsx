@@ -48,8 +48,9 @@ const Index = () => {
 
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
-      {data?.map((item) => (     
+      {data?.map((item, index) => (     
           <div
+          key={index}
             className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff] cursor-pointer"
             onClick={moveSingle}
           >

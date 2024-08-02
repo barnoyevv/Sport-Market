@@ -50,7 +50,7 @@ const KeepMountedModal: React.FC<KeepMountedModalProps> = ({ open, handleClose }
           Вход в аккаунт
         </Typography>
         <Typography id="keep-mounted-modal-description" className='text-[#000]' sx={{ mb: 3 }}>
-          Если Вы не зарегистрированы, нажмите кнопку <span className='text-[#FBD029] cursor-pointer'>"Регистрация"</span>
+          Если Вы не зарегистрированы, нажмите кнопку <span className='text-[#FBD029] cursor-pointer'>Регистрация</span>
         </Typography>
         <Formik
           initialValues={{

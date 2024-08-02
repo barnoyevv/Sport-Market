@@ -9,6 +9,7 @@ import Andr from "@/public/logo2.png";
 import Nike from "@/public/logo3.png";
 import Adidas from "@/public/logo4.png";
 import Reebok from "@/public/logo5.png";
+import Image from "next/image";
 
 export default function App() {
   const logos = [Puma, Andr, Nike, Adidas, Reebok];
@@ -37,7 +38,7 @@ export default function App() {
                   key={index}
                   className="flex items-center justify-center"
                 >
-                  <img
+                  <Image
                     src={logo.src}
                     alt={`Logo ${index}`}
                     className="w-32 h-32 object-contain grayscale hover:grayscale-0 transition-all duration-300"
