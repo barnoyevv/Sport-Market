@@ -42,7 +42,7 @@ const Index = () => {
     getData();
   }, []);
 
-  const moveSingle = (product_id: string) => {
+  const moveSingle = (product_id:any) => {
     router.push(`/products/${product_id}`);
   };
 

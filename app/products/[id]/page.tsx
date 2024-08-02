@@ -6,8 +6,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
-import productImage from "@/public/images/tavar3.png";
-import avatar from "@/public/images/tavar3.png";
+import productImage from "@/public/2.jpg";
+import avatar from "@/public/2.jpg";
 
 const Index = () => {
   const imgList = [productImage, productImage, productImage, productImage];
