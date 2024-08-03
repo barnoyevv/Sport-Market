@@ -92,12 +92,14 @@ const Index = () => {
 
   const fetchProduct = useCallback(async () => {
     try {
-      const response = await getProductId(id);
+      const productId: string = Array.isArray(id) ? id[0] : id as string;
+      const response: any = await getProductId(productId);
       setProducts(response);
     } catch (error) {
       console.log(error);
     }
   }, [id]);
+  
 
   useEffect(() => {
     fetchProduct();
