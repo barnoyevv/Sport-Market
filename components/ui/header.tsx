@@ -17,7 +17,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import Basket from "@/public/basket.svg";
-import SpringModal from '@/components/modals/auth-modal'; // Make sure this path is correct
+import SpringModal from '@/components/modals/auth-modal';
+import { useRouter } from 'next/navigation';
 
 const firaSans = Fira_Sans({
   weight: ['400', '500', '600', '700'],
@@ -41,10 +42,14 @@ const routes: Route[] = [
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter()
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+  const moveFavourite = () =>{
+    router.push('/wishlist')
+  }
 
   return (
     <>
@@ -190,6 +195,7 @@ const Header: React.FC = () => {
           </Button>
           <Button
             variant="contained"
+            onClick={moveFavourite}
             sx={{
               backgroundColor: '#F2F2F2',
               color: '#1F1D14',

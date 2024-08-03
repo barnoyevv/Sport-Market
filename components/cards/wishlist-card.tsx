@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FiHeart } from "react-icons/fi";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import CardButton from '@/public/basket.svg';
-import { getProduct, like } from '@/service/products.service';
+import { like } from '@/service/products.service';
+import { getWishlist } from '@/service/wishlist.service';
 import { useRouter } from 'next/navigation';
 import Img1 from '@/public/1.jpg';
 
@@ -20,54 +22,20 @@ interface Product {
 
 const Index = () => {
   const [data, setData] = useState<Product[]>([]);
-  const [likedItems, setLikedItems] = useState<string[]>([]);
   const router = useRouter();
 
   const getData = async () => {
     try {
-      const response = await getProduct(1, 4);
+      const response = await getWishlist(1, 4);
       if (response?.products) {
-        const storedLikedItems = localStorage.getItem('likedItems');
-        const parsedLikedItems = storedLikedItems ? JSON.parse(storedLikedItems) : [];
-
-        const productsWithLikeState:any = response.products.map((product) => ({
+        const productsWithLikeState: any = response.products.map((product) => ({
           ...product,
-          liked: parsedLikedItems.includes(product.product_id),
+          liked: true,
         }));
-
         setData(productsWithLikeState);
-        setLikedItems(parsedLikedItems);
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
-
-  const moveSingle = (productId: string) => {
-    router.push(`/products/${productId}`);
-  };
-
-  const handleLike = async (productId: string) => {
-    try {
-      const response:any = await like(productId);
-      console.log('Like Response:', response);
-      let updatedLikedItems: string[];
-
-      if (response.data === true) {
-        updatedLikedItems = [...likedItems, productId];
-      } else {
-        updatedLikedItems = likedItems.filter((itemId) => itemId !== productId);
-      }
-
-      setLikedItems(updatedLikedItems);
-      localStorage.setItem('likedItems', JSON.stringify(updatedLikedItems));
-
-      const updatedData = data.map((item) =>
-        item.product_id === productId ? { ...item, liked: response.data === true } : item
-      );
-      setData(updatedData);
-    } catch (error) {
-      console.error('Error liking product:', error);
+      console.error("Error fetching products:", error);
     }
   };
 
@@ -75,33 +43,63 @@ const Index = () => {
     getData();
   }, []);
 
+  const moveSingle = (productId: string) => {
+    router.push(`/products/${productId}`);
+  };
+
+  const handleLike = async (productId: string) => {
+    try {
+      const response: any = await like(productId);
+      if (response) {
+        const productsWithLikeState: any = data.map((product) =>
+          product.product_id === productId
+            ? { ...product, liked: !product.liked }
+            : product
+        );
+        setData(productsWithLikeState);
+      }
+      window.location.reload()
+    } catch (error) {
+      console.error('Error liking the product:', error);
+    }
+  };
+
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
       {data.map((item) => (
         <div
           key={item.id}
           className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff] cursor-pointer"
-          onClick={() => moveSingle(item.product_id)}
+          onClick={() => moveSingle(item.id)}
         >
-          <div className="relative w-full h-[200px]">
+          <div className="relative w-full h-[200px]"> {/* Set explicit height for the image container */}
             <Image
               src={Array.isArray(item.image_url) && item.image_url[0] ? item.image_url[0] : Img1}
               alt="product image"
               className="object-cover rounded-md"
               fill
-              style={{ borderRadius: '8px' }}
+              style={{ borderRadius: '8px' }} // Ensure image has rounded corners
             />
-            <button
+            <Button
               onClick={(e) => {
                 e.stopPropagation();
                 handleLike(item.product_id);
               }}
-              className={`bg-transparent absolute top-2 right-2 p-1 rounded-full shadow-md transition-colors ${
-                item.liked ? 'text-red-500' : 'text-[#FBD029]'
-              }`}
+              className="absolute top-2 right-2 p-1"
+              style={{
+                minWidth: 'unset',
+                padding: '0',
+                color: item.liked ? 'red' : 'white',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.7)'
+              }}
             >
-              <FiHeart size={24} />
-            </button>
+              {item.liked ? (
+                <FavoriteIcon style={{ color: 'red', fontSize: 24 }} />
+              ) : (
+                <FavoriteBorderIcon style={{ color: 'black', fontSize: 24 }} />
+              )}
+            </Button>
           </div>
           <p className="text-lg text-black font-normal">{item.product_name}</p>
           <div>
