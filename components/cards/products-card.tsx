@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import CardButton from '@/public/basket.svg';
 import { getProduct, like } from '@/service/products.service';
 import { useRouter } from 'next/navigation';
+import basket from "@/service/basket.service"
 import Img1 from '@/public/1.jpg';
 
 interface Product {
@@ -52,16 +53,13 @@ const Index = () => {
       const response:any = await like(productId);
       console.log('Like Response:', response);
       let updatedLikedItems: string[];
-
       if (response.data === true) {
         updatedLikedItems = [...likedItems, productId];
       } else {
         updatedLikedItems = likedItems.filter((itemId) => itemId !== productId);
       }
-
       setLikedItems(updatedLikedItems);
       localStorage.setItem('likedItems', JSON.stringify(updatedLikedItems));
-
       const updatedData = data.map((item) =>
         item.product_id === productId ? { ...item, liked: response.data === true } : item
       );
@@ -74,6 +72,15 @@ const Index = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const addToBasket = async (product_id: any) => {
+    try {
+      const response = await basket.post({ product_id }); 
+      console.log('Basket response:', response);
+    } catch (error) {
+      console.error('Error adding to basket:', error);
+    }
+  }
 
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
@@ -109,6 +116,7 @@ const Index = () => {
           </div>
           <Button
             variant="contained"
+            onClick={() => addToBasket(item.product_id)}
             sx={{
               backgroundColor: '#FBD029',
               color: '#1F1D14',
