@@ -25,7 +25,7 @@ interface KeepMountedModalProps {
   handleClose: () => void;
 }
 
-const KeepMountedModal: React.FC<KeepMountedModalProps> = ({ open, handleClose, id }) => {
+const KeepMountedModal: React.FC<KeepMountedModalProps> = ({ open, handleClose }) => {
 
   const handleSubmit = async (values: any) => {
     try {

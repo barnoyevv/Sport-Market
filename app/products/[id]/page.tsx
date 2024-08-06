@@ -142,7 +142,7 @@ const Index = () => {
   };
   return (
     <>
-      <CommentModal id={product_id} open={open} handleClose={() => setOpen(false)} />
+      <CommentModal open={open} handleClose={() => setOpen(false)} />
       <div className="p-4 md:p-8 bg-gray-100">
         <div className="container">
           <div className="flex flex-col w-full md:flex-row gap-8 p-6 rounded-lg bg-white">
