@@ -16,8 +16,10 @@ import Share from "@/public/share.svg";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { getComment } from "@/service/comment.service";
 import CommentModal from "@/components/modals/comment-modal";
+import basket from "@/service/basket.service";
 
 interface ProductData {
+  product_id: string
   image_url: string[];
   product_name: string;
   description: string;
@@ -117,17 +119,30 @@ const Index = () => {
     return <Loading />;
   }
 
-  const { image_url, product_name, description, count, made_in, cost } = products;
+  const { product_id, image_url, product_name, description, count, made_in, cost } = products;
 
   const addComment = () => {
     setOpen(true);
   };
 
+  const addToBasket = async (product_id: any) => {
+    try {
+      const product = { productId: product_id, quantity: 1 };
+      const response = await basket.post(product);
+      console.log("Basket Response:", response);
+
+      if (response.data === true) {
+        console.log("Product added to basket successfully.");
+      } else {
+        console.error("Failed to add product to basket:", response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
-    {console.log(comment)
-    }
-      <CommentModal open={open} handleClose={() => setOpen(false)} />
+      <CommentModal id={product_id} open={open} handleClose={() => setOpen(false)} />
       <div className="p-4 md:p-8 bg-gray-100">
         <div className="container">
           <div className="flex flex-col w-full md:flex-row gap-8 p-6 rounded-lg bg-white">
@@ -145,7 +160,10 @@ const Index = () => {
                 {cost} UZS / 1 шт.
               </p>
               <div className="flex gap-4 mt-[30px]">
-                <button className="flex items-center gap-[4px] px-5 py-3 bg-yellow-400 text-[#1F1D14] rounded-md">
+                <button onClick={(e) => {
+              e.stopPropagation(); // Bu parent hodisasini to'xtatadi
+              addToBasket(product_id);
+            }} className="flex items-center gap-[4px] px-5 py-3 bg-yellow-400 text-[#1F1D14] rounded-md">
                   <Image src={Basket} alt="Add to Basket" />
                   Корзина
                 </button>
@@ -185,8 +203,8 @@ const Index = () => {
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md transition-transform hover:scale-105">
                 <h2 className="text-[32px] font-medium text-[#000] mb-4">Отзывы</h2>
-                {comment.length > 0 ? (
-                  comment.map((item: any, index: number) => (
+                {comment?.length > 0 ? (
+                  comment?.map((item: any, index: number) => (
                     <div key={index} className="mb-4">
                       <div className="flex gap-4 items-center">
                         <Image src="/avatar.svg" alt="User avatar" width={50} height={50} />

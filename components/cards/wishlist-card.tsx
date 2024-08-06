@@ -45,7 +45,7 @@ const Index = () => {
 
   const moveSingle = (productId: string) => {
     router.push(`/products/${productId}`);
-  };
+  };  
 
   const handleLike = async (productId: string) => {
     try {
@@ -72,13 +72,13 @@ const Index = () => {
           className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff] cursor-pointer"
           onClick={() => moveSingle(item.id)}
         >
-          <div className="relative w-full h-[200px]"> {/* Set explicit height for the image container */}
+          <div className="relative w-full h-[200px]">
             <Image
               src={Array.isArray(item.image_url) && item.image_url[0] ? item.image_url[0] : Img1}
               alt="product image"
               className="object-cover rounded-md"
               fill
-              style={{ borderRadius: '8px' }} // Ensure image has rounded corners
+              style={{ borderRadius: '8px' }}
             />
             <Button
               onClick={(e) => {
@@ -101,7 +101,7 @@ const Index = () => {
               )}
             </Button>
           </div>
-          <p className="text-lg text-black font-normal">{item.product_name}</p>
+          <p className="text-lg text-black font-normal">{item.product_name.slice(0, 25)}...</p>
           <div>
             <p className="text-lg text-[#000] font-bold">{item.cost}</p>
           </div>

@@ -35,7 +35,7 @@ const ProductCard: React.FC = () => {
     }
   };
 
-  const deleteCard = async (id: number) => {
+  const deleteCard = async (id: any) => {
     const updatedProducts = products.filter(
       (product) => product.product_id !== id
     );

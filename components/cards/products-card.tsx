@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FiHeart } from "react-icons/fi";
 import Button from '@mui/material/Button';
 import CardButton from '@/public/basket.svg';
 import { getProduct, like } from '@/service/products.service';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/navigation';
 import basket from "@/service/basket.service"
 import Img1 from '@/public/1.jpg';
@@ -31,7 +32,7 @@ const Index = () => {
         const storedLikedItems = localStorage.getItem('likedItems');
         const parsedLikedItems = storedLikedItems ? JSON.parse(storedLikedItems) : [];
 
-        const productsWithLikeState:any = response.products.map((product) => ({
+        const productsWithLikeState: any = response.products.map((product) => ({
           ...product,
           liked: parsedLikedItems.includes(product.product_id),
         }));
@@ -50,22 +51,43 @@ const Index = () => {
 
   const handleLike = async (productId: string) => {
     try {
-      const response:any = await like(productId);
-      console.log('Like Response:', response);
-      let updatedLikedItems: string[];
-      if (response.data === true) {
-        updatedLikedItems = [...likedItems, productId];
-      } else {
-        updatedLikedItems = likedItems.filter((itemId) => itemId !== productId);
-      }
+      const updatedData = data.map((item) =>
+        item.product_id === productId ? { ...item, liked: !item.liked } : item
+      );
+
+      setData(updatedData);
+
+      const isLiked = updatedData.find(item => item.product_id === productId)?.liked;
+      const updatedLikedItems = isLiked
+        ? [...likedItems, productId]
+        : likedItems.filter((itemId) => itemId !== productId);
+
       setLikedItems(updatedLikedItems);
       localStorage.setItem('likedItems', JSON.stringify(updatedLikedItems));
-      const updatedData = data.map((item) =>
-        item.product_id === productId ? { ...item, liked: response.data === true } : item
-      );
-      setData(updatedData);
+
+      const response: any = await like(productId);
+      console.log('Like Response:', response);
+
+      if (response.data !== true) {
+        const revertData = data.map((item) =>
+          item.product_id === productId ? { ...item, liked: !item.liked } : item
+        );
+        setData(revertData);
+
+        const revertLikedItems = likedItems.filter((itemId) => itemId !== productId);
+        setLikedItems(revertLikedItems);
+        localStorage.setItem('likedItems', JSON.stringify(revertLikedItems));
+      }
     } catch (error) {
       console.error('Error liking product:', error);
+      const revertData = data.map((item) =>
+        item.product_id === productId ? { ...item, liked: !item.liked } : item
+      );
+      setData(revertData);
+
+      const revertLikedItems = likedItems.filter((itemId) => itemId !== productId);
+      setLikedItems(revertLikedItems);
+      localStorage.setItem('likedItems', JSON.stringify(revertLikedItems));
     }
   };
 
@@ -75,12 +97,19 @@ const Index = () => {
 
   const addToBasket = async (product_id: any) => {
     try {
-      const response = await basket.post({ product_id }); 
-      console.log('Basket response:', response);
+      const product = { productId: product_id, quantity: 1 };
+      const response = await basket.post(product);
+      console.log("Basket Response:", response);
+
+      if (response.data === true) {
+        console.log("Product added to basket successfully.");
+      } else {
+        console.error("Failed to add product to basket:", response);
+      }
     } catch (error) {
-      console.error('Error adding to basket:', error);
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
@@ -94,30 +123,47 @@ const Index = () => {
             <Image
               src={Array.isArray(item.image_url) && item.image_url[0] ? item.image_url[0] : Img1}
               alt="product image"
-              className="object-cover rounded-md"
+              className="rounded-md w-full h-full"
               fill
               style={{ borderRadius: '8px' }}
+              layout="fill"
+              objectFit="cover"
             />
-            <button
+            <Button
               onClick={(e) => {
                 e.stopPropagation();
                 handleLike(item.product_id);
               }}
-              className={`bg-transparent absolute top-2 right-2 p-1 rounded-full shadow-md transition-colors ${
-                item.liked ? 'text-red-500' : 'text-[#FBD029]'
-              }`}
+              className="absolute top-2 right-2 p-1"
+              style={{
+                minWidth: 'unset',
+                padding: '0',
+                color: item.liked ? 'red' : 'white',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.7)'
+              }}
             >
-              <FiHeart size={24} />
-            </button>
+              {item.liked ? (
+                <FavoriteIcon style={{ color: 'red', fontSize: 24 }} />
+              ) : (
+                <FavoriteBorderIcon style={{ color: 'black', fontSize: 24 }} />
+              )}
+            </Button>
           </div>
-          <p className="text-lg text-black font-normal">{item.product_name}</p>
+          <div>
+            <p className="text-lg text-black font-normal">{item.product_name.slice(0, 25)}...</p>
+          </div>
           <div>
             <p className="text-lg text-[#000] font-bold">{item.cost}</p>
           </div>
           <Button
             variant="contained"
-            onClick={() => addToBasket(item.product_id)}
+            onClick={(e) => {
+              e.stopPropagation(); // Bu parent hodisasini to'xtatadi
+              addToBasket(item.product_id);
+            }}
             sx={{
+              position: 'relative', // Bu yerda z-index ishlashi uchun relative pozitsiya qo'shamiz
               backgroundColor: '#FBD029',
               color: '#1F1D14',
               '&:hover': {
@@ -131,6 +177,7 @@ const Index = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
+              zIndex: 10,
             }}
           >
             <Image src={CardButton} alt="CardButton" width={20} height={20} />

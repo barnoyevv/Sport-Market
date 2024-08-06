@@ -2,9 +2,6 @@
 
 import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
-import Board from '@/public/board.svg';
-import List from '@/public/list.svg';
-import Image from 'next/image';
 import ProductsCard from '@/components/cards/products-card';
 
 function valuetext(value: number) {
@@ -18,6 +15,9 @@ const Index: React.FC = () => {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
+  const handleSubmit = () =>{
+
+  }
 
   return (
     <div>
@@ -125,20 +125,18 @@ const Index: React.FC = () => {
               </select>
             </div>
             <div className="flex items-center gap-1">
-              <div className="flex px-3 hidden md:block py-2 items-center cursor-pointer bg-white rounded-lg gap-1">
+              <div className="flex px-3 md:block py-2 items-center cursor-pointer bg-white rounded-lg gap-1">
                 <p className="text-sm text-black">Кард</p>
-                <Image src={Board} alt="Board" />
               </div>
-              <div className="flex px-3 hidden md:block py-2 items-center cursor-pointer bg-white rounded-lg gap-1">
+              <div className="flex px-3 md:block py-2 items-center cursor-pointer bg-white rounded-lg gap-1">
                 <p className="text-sm text-black opacity-40">Лист</p>
-                <Image src={List} alt="List" />
               </div>
             </div>
           </div>
           <ProductsCard />
-          <div className="w-full bg-white rounded-lg cursor-pointer flex items-center justify-center py-4 mt-5">
+          <button onClick={handleSubmit} className="Submit w-full bg-white rounded-lg cursor-pointer flex items-center justify-center py-4 mt-5">
             <p className="text-lg text-black">Показать ещё</p>
-          </div>
+          </button>
         </div>
       </div>
       <div className="flex flex-col items-center lg:items-start w-full gap-4 px-4 pt-12 pb-8 bg-[#F2F2F2] sm:px-6 lg:px-16 xl:px-24">

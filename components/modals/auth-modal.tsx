@@ -34,7 +34,9 @@ const KeepMountedModal: React.FC<KeepMountedModalProps> = ({ open, handleClose }
   const handleSubmit = async(values:IAuth) => {
     const status = await login(values)
     console.log(status);
-    
+    if (status) {
+      window.location.reload()
+    }
   };
 
   return (

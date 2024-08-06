@@ -2,10 +2,8 @@
 
 import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
-import Board from '@/public/board.svg';
-import List from '@/public/list.svg';
-import Image from 'next/image';
 import WishlistCard from '@/components/cards/wishlist-card';
+import ProductCard from '@/components/cards/products-card'
 
 function valuetext(value: number) {
   return `${value}$`;
@@ -143,7 +141,7 @@ const Index: React.FC = () => {
         <div>
           <h2 className="text-2xl text-[#1F1D14] font-medium">Реконмендуемые продукты</h2>
         </div>
-        <WishlistCard />
+        <ProductCard />
       </div>
     </div>
   );
