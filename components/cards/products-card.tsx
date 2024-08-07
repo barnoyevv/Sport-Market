@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
-import CardButton from '@/public/basket.svg';
-import { getProduct, like } from '@/service/products.service';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useRouter } from 'next/navigation';
-import basket from "@/service/basket.service"
+import CardButton from '@/public/basket.svg';
 import Img1 from '@/public/1.jpg';
+import { getProduct, like } from '@/service/products.service';
+import basket from "@/service/basket.service"
 
 interface Product {
   product_id: string;
@@ -154,7 +154,7 @@ const Index = () => {
             <p className="text-lg text-black font-normal">{item.product_name.slice(0, 25)}...</p>
           </div>
           <div>
-            <p className="text-lg text-[#000] font-bold">{item.cost}</p>
+            <p className="text-lg text-[#000] font-bold">{item.cost}UZS</p>
           </div>
           <Button
             variant="contained"

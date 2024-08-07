@@ -3,10 +3,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Visibility, VisibilityOff, Email, Lock } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { SignInValidationSchema } from '@/utils/validation';
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import {login} from '@/service/auth.service'
+import { login } from '@/service/auth.service'
 import { IAuth } from '@/types/auth';
 
 const style = {
@@ -31,7 +31,7 @@ interface KeepMountedModalProps {
 const KeepMountedModal: React.FC<KeepMountedModalProps> = ({ open, handleClose }) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleSubmit = async(values:IAuth) => {
+  const handleSubmit = async (values: IAuth) => {
     const status = await login(values)
     console.log(status);
     if (status) {

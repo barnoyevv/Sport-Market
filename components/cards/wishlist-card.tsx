@@ -5,10 +5,10 @@ import Image from 'next/image';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
-import CardButton from '@/public/basket.svg';
+import { useRouter } from 'next/navigation';
 import { like } from '@/service/products.service';
 import { getWishlist } from '@/service/wishlist.service';
-import { useRouter } from 'next/navigation';
+import CardButton from '@/public/basket.svg';
 import Img1 from '@/public/1.jpg';
 
 interface Product {
@@ -45,7 +45,7 @@ const Index = () => {
 
   const moveSingle = (productId: string) => {
     router.push(`/products/${productId}`);
-  };  
+  };
 
   const handleLike = async (productId: string) => {
     try {

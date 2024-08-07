@@ -1,12 +1,10 @@
 'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import ProductCard from '@/components/cards/products-card';
 import Slash from '@/public/slash.svg';
 
 const Index = () => {
-
   const data = [
     {
       header1: 'Способы оплаты',
@@ -49,13 +47,13 @@ const Index = () => {
                 <h1 className='text-[26px] text-[#000] font-medium'>{item.header1}</h1>
                 <p className='text-[16px] text-[#000] font-normal max-w-[700px]'>{item.parag1.split('\n').map((text, i) => (
                   <React.Fragment key={i}>
-                    {text}<br/>
+                    {text}<br />
                   </React.Fragment>
                 ))}</p>
                 <h2 className='text-[22px] text-[#000] font-medium'>{item.header2}</h2>
                 <p className='text-[16px] text-[#000] font-normal max-w-[700px]'>{item.parag2.split('\n').map((text, i) => (
                   <React.Fragment key={i}>
-                    {text}<br/>
+                    {text}<br />
                   </React.Fragment>
                 ))}</p>
               </div>

@@ -1,20 +1,20 @@
 "use client"
 import React, { useEffect, useState, useCallback } from "react";
+import SendIcon from '@mui/icons-material/Send';
+import { CircularProgress } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { getProductId } from "@/service/products.service";
 import { useParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 import Basket from "@/public/basket.svg";
 import Options from "@/public/options.svg";
 import Share from "@/public/share.svg";
 import { getComment, addComment } from "@/service/comment.service";
+import { getProductId } from "@/service/products.service";
 import basket from "@/service/basket.service";
-import SendIcon from '@mui/icons-material/Send';
 
 interface ProductData {
   product_id: string;

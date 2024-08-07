@@ -8,12 +8,12 @@ import Catalog5 from '@/public/catalog5.png'
 import Catalog6 from '@/public/catalog6.png'
 
 const catalog = [
-  {text: "Тренажеры", src: Catalog1, alt: "Catalog1", color: "#D3E5F2"},
-  {text: "Мячи", src: Catalog2, alt: "Catalog2", color: "#E2C6BE"},
-  {text: "Спротивные обуви", src: Catalog3, alt: "Catalog3", color: "#DADBE0"},
-  {text: "Спортивные одежды", src: Catalog4, alt: "Catalog4", color: "#E2EEC0"},
-  {text: "Водный спорт", src: Catalog5, alt: "Catalog5", color: "#C2BCE8"},
-  {text: "Горный спорт", src: Catalog6, alt: "Catalog6", color: "#ABA520"},
+  { text: "Тренажеры", src: Catalog1, alt: "Catalog1", color: "#D3E5F2" },
+  { text: "Мячи", src: Catalog2, alt: "Catalog2", color: "#E2C6BE" },
+  { text: "Спротивные обуви", src: Catalog3, alt: "Catalog3", color: "#DADBE0" },
+  { text: "Спортивные одежды", src: Catalog4, alt: "Catalog4", color: "#E2EEC0" },
+  { text: "Водный спорт", src: Catalog5, alt: "Catalog5", color: "#C2BCE8" },
+  { text: "Горный спорт", src: Catalog6, alt: "Catalog6", color: "#ABA520" },
 ]
 
 const Index = () => {
@@ -26,9 +26,9 @@ const Index = () => {
           style={{ backgroundColor: item.color }}
         >
           <p className="text-lg text-black font-normal mb-2">{item.text}</p>
-          <Image 
-            src={item.src} 
-            alt={item.alt} 
+          <Image
+            src={item.src}
+            alt={item.alt}
             className="object-cover rounded-md"
           />
         </div>

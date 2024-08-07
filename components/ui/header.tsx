@@ -1,10 +1,6 @@
 'use client'
 
 import React, { useState } from 'react';
-import Image from 'next/image';
-import Logo from '@/public/logo.svg';
-import { Fira_Sans } from 'next/font/google';
-import Link from 'next/link';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,9 +12,13 @@ import CategoryIcon from '@mui/icons-material/Category';
 import InputAdornment from '@mui/material/InputAdornment';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import Basket from "@/public/basket.svg";
-import SpringModal from '@/components/modals/auth-modal';
+import { Fira_Sans } from 'next/font/google';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import Basket from "@/public/basket.svg";
+import Logo from '@/public/logo.svg';
+import SpringModal from '@/components/modals/auth-modal';
 
 const firaSans = Fira_Sans({
   weight: ['400', '500', '600', '700'],
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-  const moveFavourite = () =>{
+  const moveFavourite = () => {
     router.push('/wishlist')
   }
 
@@ -178,7 +178,7 @@ const Header: React.FC = () => {
         <div className='flex items-center space-x-2'>
           <Button
             variant="contained"
-            onClick={()=>setOpen(true)}
+            onClick={() => setOpen(true)}
             sx={{
               backgroundColor: '#F2F2F2',
               color: '#1F1D14',

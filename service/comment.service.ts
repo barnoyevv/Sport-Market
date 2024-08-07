@@ -9,12 +9,6 @@ interface Product {
   liked: boolean;
 }
 
-interface ProductResponse {
-  data: any;
-  status: number;
-  products: Product[];
-}
-
 interface CommentResponse {
   Comment: any[];
 }

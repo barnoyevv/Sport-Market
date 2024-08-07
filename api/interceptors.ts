@@ -4,7 +4,7 @@ const http = axios.create({
   baseURL: "https://store.go-clothes.uz/v1"
 })
 
-http.interceptors.request.use((config)=>{
+http.interceptors.request.use((config) => {
   let access_token = getAccessToken()
   if (access_token) {
     config.headers["Authorization"] = `Bearer ${access_token}`

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import ProductsCard from '@/components/cards/products-card';
@@ -15,9 +14,6 @@ const Index: React.FC = () => {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
-  const handleSubmit = () =>{
-
-  }
 
   return (
     <div>
@@ -134,7 +130,7 @@ const Index: React.FC = () => {
             </div>
           </div>
           <ProductsCard />
-          <button onClick={handleSubmit} className="Submit w-full bg-white rounded-lg cursor-pointer flex items-center justify-center py-4 mt-5">
+          <button className="Submit w-full bg-white rounded-lg cursor-pointer flex items-center justify-center py-4 mt-5">
             <p className="text-lg text-black">Показать ещё</p>
           </button>
         </div>

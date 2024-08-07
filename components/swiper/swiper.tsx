@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -9,7 +10,6 @@ import Andr from "@/public/logo2.png";
 import Nike from "@/public/logo3.png";
 import Adidas from "@/public/logo4.png";
 import Reebok from "@/public/logo5.png";
-import Image from "next/image";
 
 export default function App() {
   const logos = [Puma, Andr, Nike, Adidas, Reebok];

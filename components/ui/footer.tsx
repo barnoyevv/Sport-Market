@@ -1,17 +1,17 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
-import Logo from '@/public/logo.svg'
-import { Fira_Sans } from 'next/font/google'
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
-import MarkunreadIcon from '@mui/icons-material/Markunread'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import InstagramIcon from '@mui/icons-material/Instagram'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined'
+import MarkunreadIcon from '@mui/icons-material/Markunread'
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { Fira_Sans } from 'next/font/google'
+import Image from 'next/image'
+import Logo from '@/public/logo.svg'
 
 const firaSans = Fira_Sans({
   weight: ['400', '500', '600', '700'],

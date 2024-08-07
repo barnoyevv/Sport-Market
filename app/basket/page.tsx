@@ -1,11 +1,11 @@
 "use client";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { HiOutlineLocationMarker } from "react-icons/hi";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import click from "@/public/click.png";
 import payme from "@/public/payme.png";
 import basket from "@/service/basket.service";
-import { HiOutlineLocationMarker } from "react-icons/hi";
 
 interface Product {
   cost: number;
