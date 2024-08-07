@@ -15,7 +15,11 @@ interface ProductResponse {
   products: Product[];
 }
 
-export const getComment = async (page: number, limit: number, product_id: string): Promise<ProductResponse> => {
+interface CommentResponse {
+  Comment: any[];
+}
+
+export const getComment = async (page: number, limit: number, product_id: string): Promise<CommentResponse> => {
   try {
     const response = await http.get(`/product-comments?page=${page}&limit=${limit}&id=${product_id}`);
     return response.data;
@@ -25,9 +29,9 @@ export const getComment = async (page: number, limit: number, product_id: string
   }
 };
 
-export const addComment = async (values: any) => {
+export const addComment = async (product_id: string, commentText: string) => {
   try {
-    const response = await http.post('/comment', values);
+    const response = await http.post('/comment', { product_id, commentText });
     return response.data;
   } catch (error) {
     console.error('Error adding comment:', error);

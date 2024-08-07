@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React, { useEffect, useState, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -13,19 +12,24 @@ import { CircularProgress } from "@mui/material";
 import Basket from "@/public/basket.svg";
 import Options from "@/public/options.svg";
 import Share from "@/public/share.svg";
-import ModeCommentIcon from "@mui/icons-material/ModeComment";
-import { getComment } from "@/service/comment.service";
-import CommentModal from "@/components/modals/comment-modal";
+import { getComment, addComment } from "@/service/comment.service";
 import basket from "@/service/basket.service";
+import SendIcon from '@mui/icons-material/Send';
 
 interface ProductData {
-  product_id: string
+  product_id: string;
   image_url: string[];
   product_name: string;
   description: string;
   count: number;
   made_in: string;
   cost: number;
+}
+
+interface Comment {
+  OwnerID: string;
+  Date: string;
+  Message: string;
 }
 
 const Loading = () => (
@@ -94,16 +98,16 @@ const ProductImages: React.FC<{ images: string[] }> = ({ images }) => (
 const Index = () => {
   const { id } = useParams();
   const [products, setProducts] = useState<ProductData | null>(null);
-  const [comment, setComment] = useState<any[]>([]);
-  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const fetchProduct = useCallback(async () => {
     try {
       if (id) {
-        const productId: string = Array.isArray(id) ? id[0] : (id as string);
+        const productId: string = Array.isArray(id) ? id[0] : id;
         const response: any = await getProductId(productId);
-        const commentResponse:any = await getComment(1, 4, productId);
-        setComment(commentResponse.Comment);
+        const commentResponse = await getComment(1, 4, productId);
+        setComments(commentResponse.Comment);
         setProducts(response);
       }
     } catch (error) {
@@ -121,28 +125,37 @@ const Index = () => {
 
   const { product_id, image_url, product_name, description, count, made_in, cost } = products;
 
-  const addComment = () => {
-    setOpen(true);
+  const handleAddComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(e.target as HTMLFormElement);
+      const commentText: any = formData.get("comment");
+      console.log(commentText);
+      const response = await addComment(product_id, commentText);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const addToBasket = async (product_id: any) => {
+  const addToBasket = async (product_id: string) => {
     try {
       const product = { productId: product_id, quantity: 1 };
       const response = await basket.post(product);
-      console.log("Basket Response:", response);
-
-      if (response.data === true) {
+      if (response.data) {
         console.log("Product added to basket successfully.");
       } else {
         console.error("Failed to add product to basket:", response);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error adding product to basket:", error);
     }
   };
+
+  const visibleComments = showAllComments ? comments : comments.slice(0, 2);
+
   return (
     <>
-      <CommentModal open={open} handleClose={() => setOpen(false)} />
       <div className="p-4 md:p-8 bg-gray-100">
         <div className="container">
           <div className="flex flex-col w-full md:flex-row gap-8 p-6 rounded-lg bg-white">
@@ -160,10 +173,13 @@ const Index = () => {
                 {cost} UZS / 1 шт.
               </p>
               <div className="flex gap-4 mt-[30px]">
-                <button onClick={(e) => {
-              e.stopPropagation(); // Bu parent hodisasini to'xtatadi
-              addToBasket(product_id);
-            }} className="flex items-center gap-[4px] px-5 py-3 bg-yellow-400 text-[#1F1D14] rounded-md">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToBasket(product_id);
+                  }}
+                  className="flex items-center gap-[4px] px-5 py-3 bg-yellow-400 text-[#1F1D14] rounded-md"
+                >
                   <Image src={Basket} alt="Add to Basket" />
                   Корзина
                 </button>
@@ -203,14 +219,18 @@ const Index = () => {
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md transition-transform hover:scale-105">
                 <h2 className="text-[32px] font-medium text-[#000] mb-4">Отзывы</h2>
-                {comment?.length > 0 ? (
-                  comment?.map((item: any, index: number) => (
+                {visibleComments.length > 0 ? (
+                  visibleComments.map((item: Comment, index: number) => (
                     <div key={index} className="mb-4">
                       <div className="flex gap-4 items-center">
                         <Image src="/avatar.svg" alt="User avatar" width={50} height={50} />
                         <div>
-                          <p className="text-[20px] text-[#1F1D14] font-medium">{item.OwnerID}</p>
-                          <p className="text-[16px] text-[#1F1D14] font-normal opacity-60">{item.Date}</p>
+                          <p className="text-[20px] text-[#1F1D14] font-medium">
+                            {item.OwnerID}
+                          </p>
+                          <p className="text-[16px] text-[#1F1D14] font-normal opacity-60">
+                            {item.Date}
+                          </p>
                         </div>
                       </div>
                       <p className="text-[16px] text-[#000] font-normal mt-2">
@@ -228,12 +248,29 @@ const Index = () => {
                 ) : (
                   <p className="text-[#1F1D14]">No comments yet.</p>
                 )}
-                <p className="mt-4 text-[16px] text-[#1F1D14] font-normal opacity-60 flex justify-between">
-                  <button onClick={()=>addComment()}>
-                    <ModeCommentIcon />
+                {comments.length > 2 && (
+                  <p
+                    className="mt-4 text-[16px] text-[#1F1D14] font-normal opacity-60 flex justify-between cursor-pointer"
+                    onClick={() => setShowAllComments(!showAllComments)}
+                  >
+                    {showAllComments ? "Скрыть" : "Показать все"}
+                  </p>
+                )}
+                <form id="submit" onSubmit={handleAddComment}>
+                  <textarea
+                    name="comment"
+                    className="w-full p-4 mt-4 text-[16px] text-[#1F1D14] bg-gray-100 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                    placeholder="Написать комментарий..."
+                    rows={4}
+                  />
+                  <button
+                    type="submit"
+                    className="flex items-center gap-[4px] px-5 py-3 bg-yellow-400 text-[#1F1D14] rounded-md"
+                  >
+                    <SendIcon />
+                    Отправить
                   </button>
-                  Все отзывы
-                </p>
+                </form>
               </div>
             </div>
           </div>
