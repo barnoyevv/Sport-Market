@@ -56,14 +56,16 @@ const Header: React.FC = () => {
       <SpringModal open={open} handleClose={() => setOpen(false)} />
       <header className="fixed top-0 left-0 w-full z-50 px-2 py-3 bg-[#1F1D14] flex items-center justify-between sm:px-5 lg:px-24 xl:px-30">
         <div className="flex items-center">
-          <div className="flex items-center gap-2">
-            <Image src={Logo} alt="Logo" />
-            <div className="max-w-[80px]">
-              <h1 className={`text-lg font-semibold leading-tight ${firaSans.className} lg:text-xl xl:text-2xl`}>
-                Sport Market
-              </h1>
+          <Link href='/'>
+            <div className="flex items-center gap-2">
+              <Image src={Logo} alt="Logo" />
+              <div className="max-w-[80px]">
+                <h1 className={`text-lg font-semibold leading-tight ${firaSans.className} lg:text-xl xl:text-2xl`}>
+                  Sport Market
+                </h1>
+              </div>
             </div>
-          </div>
+          </Link>
           <nav className="hidden xl:flex xl:gap-4 ml-6">
             {routes.map((item, index) => (
               <Link key={index} href={item.path}>

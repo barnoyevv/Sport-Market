@@ -112,14 +112,14 @@ const Index = () => {
   };
 
   return (
-    <div className="flex-wrap sm:flex sm:justify-between w-full gap-4">
+    <div className="flex-wrap sm:flex justify-center lg:justify-between w-full gap-4">
       {data.map((item) => (
         <div
           key={item.id}
-          className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] w-full rounded-md bg-[#fff] cursor-pointer"
+          className="py-[15px] px-[20px] flex flex-col gap-3 sm:w-[300px] 2xl:w-[400px] w-full rounded-md bg-[#fff] cursor-pointer"
           onClick={() => moveSingle(item.product_id)}
         >
-          <div className="relative w-full h-[200px]">
+          <div className="relative w-full h-[200px] 2xl:h-[300px]">
             <Image
               src={Array.isArray(item.image_url) && item.image_url[0] ? item.image_url[0] : Img1}
               alt="product image"

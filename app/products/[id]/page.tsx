@@ -156,7 +156,7 @@ const Index = () => {
 
   return (
     <>
-      <div className="p-4 md:p-8 bg-gray-100">
+      <div className="flex flex-col items-center sm:items-start w-full gap-[10px] sm:gap-[20px] px-2 py-[20px] bg-[#F2F2F2] sm:px-5 lg:px-24 xl:px-30">
         <div className="container">
           <div className="flex flex-col w-full md:flex-row gap-8 p-6 rounded-lg bg-white">
             <div className="md:w-1/2">
